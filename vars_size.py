@@ -1,7 +1,9 @@
-class VarsSize:
-    uint32 = 4
-    uint16 = 2
+from enum import IntEnum
+
+
+class VarsSize(IntEnum):
     uint8 = 1
+    uint16 = 2
+    uint32 = 4
     float = 4
     Vector = 12
-    unsigned_char = 1

@@ -7,6 +7,7 @@ def main():
     navmeshs = {}
     for map_name in parser.raw_files.keys():
         navmeshs[map_name] = parser.parse(map_name)
+
     return navmeshs
 
 

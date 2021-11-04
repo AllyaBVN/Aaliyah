@@ -38,7 +38,7 @@ class Parser:
         navmesh.bsp_size = self.read("I", VarsSize.uint32)
 
         if navmesh.major_version >= 14:
-            navmesh.is_mesh_analyzed = self.read("B", VarsSize.unsigned_char)
+            navmesh.is_mesh_analyzed = self.read("B", VarsSize.uint8)
 
         place_count = self.read("H", VarsSize.uint16)
 
@@ -52,7 +52,7 @@ class Parser:
             navmesh.places[i + 1] = cur_place
 
         if navmesh.major_version > 11:
-            has_unnamed_areas = self.read("B", VarsSize.unsigned_char)
+            has_unnamed_areas = self.read("B", VarsSize.uint8)
 
         area_count = self.read("I", VarsSize.uint32)
         for i in range(area_count):
@@ -60,7 +60,7 @@ class Parser:
 
             area.id = self.read("I", VarsSize.uint32)
             if navmesh.major_version <= 8:
-                area.flags = self.read("B", VarsSize.unsigned_char)
+                area.flags = self.read("B", VarsSize.uint8)
             elif navmesh.major_version < 13:
                 area.flags = self.read("H", VarsSize.uint16)
             else:
@@ -82,17 +82,17 @@ class Parser:
                     cur_connection.target_area_id = self.read("I", VarsSize.uint32)
                     area.connections.append(cur_connection)
 
-            hiding_spot_count = self.read("B", VarsSize.unsigned_char)
+            hiding_spot_count = self.read("B", VarsSize.uint8)
             for j in range(hiding_spot_count):
                 cur_hiding_spot = HidingSpot()
                 cur_hiding_spot.id = self.read("I", VarsSize.uint32)
                 cur_hiding_spot.position = self.read("3f", VarsSize.Vector)
-                cur_hiding_spot.flags = self.read("B", VarsSize.unsigned_char)
+                cur_hiding_spot.flags = self.read("B", VarsSize.uint8)
 
                 area.hiding_spots.append(cur_hiding_spot)
 
             if navmesh.major_version < 15:
-                approch_area_count = self.read("B", VarsSize.unsigned_char)
+                approch_area_count = self.read("B", VarsSize.uint8)
                 self.increase_offset((4*3 + 2) * int(approch_area_count))
 
             encounter_paths_count = self.read("I", VarsSize.uint32)
@@ -100,16 +100,16 @@ class Parser:
                 cur_path = EncounterPath()
 
                 cur_path.from_area_id = self.read("I", VarsSize.uint32)
-                cur_path.from_direction = self.read("B", VarsSize.unsigned_char)
+                cur_path.from_direction = self.read("B", VarsSize.uint8)
                 cur_path.to_area_id = self.read("I", VarsSize.uint32)
-                cur_path.to_direction = self.read("B", VarsSize.unsigned_char)
+                cur_path.to_direction = self.read("B", VarsSize.uint8)
 
-                spot_count = self.read("B", VarsSize.unsigned_char)
+                spot_count = self.read("B", VarsSize.uint8)
                 for s in range(spot_count):
                     cur_spot = EncounterSpot()
 
                     cur_spot.order_id = self.read("I", VarsSize.uint32)
-                    distance = self.read("B", VarsSize.unsigned_char)
+                    distance = self.read("B", VarsSize.uint8)
 
                     cur_spot.distance = distance / 255
 
@@ -147,13 +147,13 @@ class Parser:
                     cur_visible_area = VisibleArea()
 
                     cur_visible_area.visible_area_id = self.read("I", VarsSize.uint32)
-                    cur_visible_area.attributes = self.read("b", VarsSize.unsigned_char)
+                    cur_visible_area.attributes = self.read("b", VarsSize.uint8)
 
                     area.visible_areas.append(cur_visible_area)
 
             area.inherit_visibility_from = self.read("I", VarsSize.uint32)
 
-            garbage_count = self.read("b", VarsSize.unsigned_char)
+            garbage_count = self.read("b", VarsSize.uint8)
 
             self.increase_offset(garbage_count * 14)
 
